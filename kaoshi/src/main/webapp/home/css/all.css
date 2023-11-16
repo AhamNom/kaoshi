@@ -1,0 +1,115 @@
+.body{
+  background-color: #eeeeee;
+}
+.main{min-height:600px;margin:0 auto;}
+.sabrosus{padding:3px;margin:3px;text-align:center;}
+.es-copyright {
+  padding: 40px 0;
+  background: #232426;
+  color: #838383;
+  text-align: center;
+}
+@media (max-width: 767px) {
+  .es-copyright {
+    padding: 20px 0;
+  }
+}
+
+.es-spread .es-copyright {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 20px 0;
+  background-color: #393c40;
+}
+@media screen and (max-width: 767px) {
+  .es-spread .es-copyright {
+    position: relative;
+  }
+}
+
+.es-user-meeting .es-copyright {
+  background-color: #03130A;
+}
+.es-banner .container {
+  text-align: left;
+  padding-left: 10%;
+}
+@media (max-width: 767px) {
+  .es-banner .container {
+    padding-left: 15px;
+  }
+}
+.other-consultant-section .container {
+  position: relative;
+}
+.case .case-list-xs .container {
+  position: absolute;
+  top: 50px;
+  width: 100%;
+  display: none;
+}
+.swiper-news .container {
+  height: 100%;
+}
+.es-indexpage .homepage-layout.homepage-train > .container {
+  padding: 0 45px;
+}
+.ie-laydown .container {
+  width: 1140px;
+  margin: 0 auto;
+}
+.esmkt .es-indexpage .homepage-layout .learn-body .container {
+  height: 560px;
+  box-shadow: 0 2px 72px 0 rgba(0, 0, 0, 0.05);
+}
+#header{top:0;left:0;right:0;height:80px;z-index:99997;background:#fff;box-shadow:0 1px 0 rgba(0,0,0,.06);line-height: 80px;}
+.wrapper{position:relative;margin:0 auto;border:0}
+.menu-bar {height: 48px;text-align: center;}
+.menu-bar .left-part {float: left;margin-top: 10px;}
+.menu-bar .right-part {float: right;margin-left: 20px;}
+.menu-bar .nav-login {display: inline-block;line-height: 48px;}
+.menu-bar .nav-login .register, .menu-bar .nav-login .login {
+    padding: 0 15px;
+    height: 32px;
+    line-height: 32px;
+}
+.menu-bar .nav-login .login {
+    margin-right: 10px;
+}
+.btn.bounce {
+    transition: transform .12s ease-in-out;
+}
+.rbtn:hover {
+    border-color: #E31725;
+    background: #E31725;
+    color: #fff;
+}
+.btn {
+    display: inline-block;
+    line-height: 1;
+    border-radius: 2px;
+    font-size: 14px;
+    padding: 0 12px;
+    height: 28px;
+    line-height: 28px;
+    background: #ededed;
+    border: 1px solid #ededed;
+    cursor: pointer;
+    text-decoration: none;
+    color: #444;
+    white-space: nowrap;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    text-align: center;
+    box-shadow: 0 0 0 transparent;
+}
+.rbtn {
+    text-shadow: none;
+    background: #EC414D;
+    color: #fff;
+    box-shadow: none;
+    border: 1px solid #EC414D;
+}

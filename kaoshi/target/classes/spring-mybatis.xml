@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:tx="http://www.springframework.org/schema/tx" 
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd    
+	http://www.springframework.org/schema/tx    
+	http://www.springframework.org/schema/tx/spring-tx-3.0.xsd  
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd">
+	
+	<!-- 引入数据库连接配置 -->
+	<context:property-placeholder location="classpath:jdbc.properties"/>
+	
+	<!-- 扫描自定扫描的包 -->
+	<context:component-scan base-package="com.runda.service"></context:component-scan>
+	
+	<!-- 一、使用c3p0连接池注册数据源 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+	
+		<!-- 基础配置 -->
+		<property name="jdbcUrl" value="${jdbc.url}?serverTimezone=GMT%2B8"></property>
+		<property name="driverClass" value="${jdbc.driver}"></property>
+		<property name="user" value="${jdbc.username}"></property>
+		<property name="password" value="${jdbc.password}"></property>
+		
+		<!-- 关键配置 -->
+		<!--初始化时获取三个连接，取值应在minPoolSize与maxPoolSize之间。Default: 3 -->
+		<!--<property name="initialPoolSize" value="${c3p0.initialPoolSize}"></property>-->
+		<!--连接池中保留的最小连接数。Default: 2 -->
+		<!--<property name="minPoolSize" value="${c3p0.minPoolSize}"></property>-->
+		<!--连接池中保留的最大连接数。Default: 15 -->
+		<!--<property name="maxPoolSize" value="${c3p0.maxPoolSize}"></property>-->
+		<!--当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。Default: 3 -->
+		<!--<property name="acquireIncrement" value="${c3p0.acquireIncrement}"></property>-->
+		<!-- 性能配置 -->
+		<!-- 控制数据源内加载的PreparedStatements数量。如果maxStatements与maxStatementsPerConnection均为0，则缓存被关闭。Default: 0 -->
+		<!--<property name="maxStatements" value="${c3p0.maxStatements}"></property>-->
+		<!-- maxStatementsPerConnection定义了连接池内单个连接所拥有的最大缓存statements数。Default: 0 -->
+		<!--<property name="maxStatementsPerConnection" value="${c3p0.maxStatementsPerConnection}"></property>-->
+		<!--最大空闲时间,1800秒内未使用则连接被丢弃。若为0则永不丢弃。Default: 0 -->
+		<!--<property name="maxIdleTime" value="${c3p0.maxIdleTime}"></property>-->
+		<!--<property name="acquireRetryAttempts" value="${c3p0.acquireRetryDelay}"></property>
+		<property name="autoCommitOnClose" value="${c3p0.autoCommitOnClose}"></property>-->
+		
+	</bean>
+	
+	<!-- 二、创建mybatis会话工厂 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+       <property name="dataSource" ref="dataSource"></property>     
+       <property name="mapperLocations" value="classpath*:mapper/*.xml"></property>
+       <!-- <property name="mapperLocations">
+            <array>
+                <value>classpath*:mapper/*.xml</value>
+            </array>
+        </property>-->
+        <property name="typeAliasesPackage" value="com.runda.module"/>
+        <!-- <property name="plugins">
+            <array>
+                <bean class="com.github.pagehelper.PageInterceptor">
+                    <property name="properties">
+                        <value>
+                            helperDialect=mysql
+                            reasonable=true
+                            supportMethodsArguments=true
+                            params=count=countSql
+                            autoRuntimeDialect=true
+                            rowBoundsWithCount=true
+                            pageSizeZero=true
+                        </value>
+                    </property>
+                </bean>
+            </array>
+        </property>-->
+       <property name="plugins">
+			<array>
+				<bean class="com.github.pagehelper.PageInterceptor">
+					<property name="properties">
+						<value>
+						<!--配置PageHelper-->
+							offsetAsPageNum=true
+							reasonable=true
+							rowBoundsWithCount=true
+							pageSizeZero=true
+						</value>
+					</property>
+				</bean>
+			</array>
+		</property>		
+    </bean>
+    
+    
+    <!-- 注册接口类的bean，使得程序中可以用注解方式获取 
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">   
+        <property name="basePackage" value="com.runda.mapper" />      
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>     
+    </bean>-->
+    <bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.runda.dao"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        <property name="markerInterface" value="com.runda.dao.BaseDAO"/>
+        <property name="properties">
+            <value>
+                mappers = com.runda.dao.BaseDAO
+                IDENTITY = MYSQL
+            </value>
+        </property>
+    </bean>
+   
+     <!--事务管理器类--> 
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    
+    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" scope="prototype">
+        <constructor-arg index="0" ref="sqlSessionFactory"/>
+    </bean>
+	
+</beans>
